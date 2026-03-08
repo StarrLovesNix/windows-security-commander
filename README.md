@@ -2,8 +2,6 @@
 
 A real-time security monitoring desktop application for Windows 10/11. Shows all network connections, processes, login events, and security threats in a chronological, Wireshark-style interface — with automatic threat intelligence lookups and optional auto-remediation.
 
-![Security Commander Screenshot](assets/screenshot.png)
-
 ## Features
 
 - **Live network feed** — every TCP/UDP connection shown as it opens, with process name and PID
@@ -22,17 +20,22 @@ A real-time security monitoring desktop application for Windows 10/11. Shows all
 ## Requirements
 
 - Windows 10 or Windows 11 (64-bit)
-- Python 3.10+ (for running from source)
+- [Python 3.10+](https://www.python.org/downloads/) — tick **"Add Python to PATH"** during install
+- [Git for Windows](https://git-scm.com/download/win) — needed to clone the repo
 - Administrator privileges recommended (required for Event Log access and firewall rules)
 
 ## Quick Start (from source)
 
+Open **PowerShell as Administrator**, then:
+
 ```powershell
-git clone https://github.com/YOUR_USERNAME/windows-security-commander.git
+git clone https://github.com/StarrLovesNix/windows-security-commander.git
 cd windows-security-commander
-python setup.py          # first-run wizard: installs deps, writes config
+python setup.py          # first-run wizard: installs all dependencies and writes config
 python gui.py            # launch the GUI
 ```
+
+`setup.py` will install all required packages automatically — you don't need to install anything else manually.
 
 Or for the terminal/headless mode:
 ```powershell
@@ -53,17 +56,17 @@ The build script handles everything: checks dependencies, generates the icon, ru
 
 ## Configuration
 
-Copy `config.json.example` to `config.json` and edit:
+The easiest way to configure is via the **Settings** dialog in the GUI (gear icon in the toolbar). Alternatively, copy `config.json.example` to `config.json` and edit it directly.
 
 | Setting | Description |
 |---------|-------------|
-| `email.*` | Gmail + App Password for email reports |
-| `threat_intel.api_key` | AbuseIPDB API key (free tier: 1000 checks/day) |
+| `threat_intel.api_key` | Free AbuseIPDB API key — sign up at [abuseipdb.com](https://www.abuseipdb.com/register) (1000 checks/day free) |
+| `email.*` | Gmail address + [App Password](https://support.google.com/accounts/answer/185833) for email reports (optional) |
 | `thresholds.brute_force_attempts` | Failed logins before brute force alert (default: 5) |
-| `remediation.*` | Auto-block IPs / kill processes (all off by default) |
-| `tray.close_to_tray` | `X` hides to tray instead of exiting (default: true) |
+| `remediation.*` | Auto-block IPs / kill processes — all off by default, enable with caution |
+| `tray.close_to_tray` | When `true`, closing the window sends it to the system tray instead of exiting |
 
-Or configure everything via **Settings** in the GUI (gear icon in toolbar).
+The app works out of the box without any API keys — threat intel lookups are simply skipped if no key is configured.
 
 ## Architecture
 
