@@ -1,0 +1,45 @@
+# -----------------------------------------------------------------------
+# Security Commander — Git ignore rules
+# -----------------------------------------------------------------------
+
+# --- Personal configuration (may contain passwords / API keys) ---
+config.json
+
+# --- Generated runtime data (personal / machine-specific) ---
+data/
+logs/
+reports/
+
+# --- Build artefacts ---
+dist/
+build_work/
+*.spec.bak
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+.env
+.venv/
+venv/
+env/
+
+# --- PyInstaller ---
+*.manifest
+*.spec.bak
+
+# --- Generated assets (reproducible via build/make_icon.py) ---
+assets/icon.ico
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+*.suo
+*.user
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,41 @@
+{
+  "_comment": "Copy this file to config.json and fill in your settings.",
+
+  "email": {
+    "_comment": "Gmail with an App Password (myaccount.google.com -> Security -> App passwords)",
+    "sender":       "",
+    "app_password": "",
+    "recipient":    ""
+  },
+
+  "threat_intel": {
+    "_comment": "Free AbuseIPDB account gives 1000 lookups/day. https://www.abuseipdb.com/",
+    "abuseipdb_api_key": ""
+  },
+
+  "thresholds": {
+    "failed_login_brute":   5,
+    "brute_window_seconds": 60
+  },
+
+  "remediation": {
+    "_comment": "All auto-remediation is OFF by default. Enable carefully.",
+    "auto_block_brute_force": false,
+    "auto_block_c2":          false,
+    "auto_kill_suspicious":   false
+  },
+
+  "alert_history": {
+    "cooldown_days": {
+      "CRITICAL": 0,
+      "HIGH":     1,
+      "MEDIUM":   3,
+      "LOW":      7,
+      "INFO":     30
+    }
+  },
+
+  "notifications": {
+    "toast": true
+  }
+}
