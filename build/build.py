@@ -47,6 +47,8 @@ ISCC_PATHS = [
     Path(r"C:\Program Files (x86)\Inno Setup 6\ISCC.exe"),
     Path(r"C:\Program Files\Inno Setup 6\ISCC.exe"),
     Path(r"C:\Program Files (x86)\Inno Setup 5\ISCC.exe"),
+    # winget installs per-user to AppData\Local\Programs
+    Path.home() / r"AppData\Local\Programs\Inno Setup 6\ISCC.exe",
     shutil.which("ISCC") and Path(shutil.which("ISCC")),
 ]
 

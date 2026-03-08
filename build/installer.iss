@@ -9,7 +9,7 @@
 #define AppVersion   "1.0.0"
 #define AppPublisher "Security Commander"
 #define AppExeName   "SecurityCommander.exe"
-#define AppURL       "https://github.com/your-repo/windows-security-commander"
+#define AppURL       "https://github.com/StarrLovesNix/windows-security-commander"
 
 [Setup]
 AppId={{A8B3C2D1-E4F5-6789-ABCD-EF0123456789}
