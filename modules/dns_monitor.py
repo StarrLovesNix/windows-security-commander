@@ -10,6 +10,7 @@ Emits: DNS events.
 
 import json
 import logging
+import subprocess
 import threading
 from datetime import datetime
 from typing import Set
@@ -64,6 +65,10 @@ class DNSMonitor:
                 data = json.loads(result.stdout.strip())
                 # PowerShell returns a dict (not list) when there is only one entry
                 return data if isinstance(data, list) else [data]
+        except FileNotFoundError:
+            logger.warning("PowerShell not found — DNS monitoring disabled")
+        except subprocess.TimeoutExpired:
+            logger.warning("DNS cache poll timed out (>15 s)")
         except Exception as exc:
             logger.debug("DNS cache poll error: %s", exc)
         return []

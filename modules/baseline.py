@@ -15,6 +15,7 @@ Baseline covers:
 
 import json
 import logging
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -39,6 +40,10 @@ def _ps(command: str, timeout: int = 20) -> List[str]:
             if isinstance(data, list):
                 return [str(x) for x in data]
             return [str(data)]
+    except FileNotFoundError:
+        logger.warning("PowerShell not found — baseline query skipped")
+    except subprocess.TimeoutExpired:
+        logger.warning("PowerShell query timed out (>%d s)", timeout)
     except Exception as exc:
         logger.debug("PowerShell query failed: %s", exc)
     return []
