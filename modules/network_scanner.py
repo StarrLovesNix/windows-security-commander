@@ -10,12 +10,12 @@ Emits: LAN_NEW, ARP_SPOOF events.
 
 import logging
 import re
-import subprocess
 import threading
 from datetime import datetime
 from typing import Dict
 
 from .events import EventType, SecurityEvent, Severity, event_queue
+from .subprocess_utils import run_hidden
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +24,9 @@ def _read_arp_table() -> Dict[str, str]:
     """Return {ip: mac} parsed from `arp -a` output."""
     result: Dict[str, str] = {}
     try:
-        out = subprocess.run(
+        out = run_hidden(
             ["arp", "-a"],
-            capture_output=True, text=True, timeout=10,
+            timeout=10,
         )
         for line in out.stdout.splitlines():
             # Matches lines like:   192.168.1.1    aa-bb-cc-dd-ee-ff    dynamic

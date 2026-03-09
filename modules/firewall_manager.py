@@ -11,8 +11,9 @@ command injection.
 
 import logging
 import re
-import subprocess
 from typing import List, Tuple
+
+from .subprocess_utils import run_hidden
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ RULE_PREFIX = "SecurityCommander-Block-"
 
 def _run(args: List[str], timeout: int = 15) -> Tuple[bool, str, str]:
     try:
-        r = subprocess.run(args, capture_output=True, text=True, timeout=timeout)
+        r = run_hidden(args, timeout=timeout)
         return r.returncode == 0, r.stdout.strip(), r.stderr.strip()
     except Exception as exc:
         return False, "", str(exc)

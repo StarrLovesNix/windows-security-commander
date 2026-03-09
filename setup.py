@@ -22,6 +22,9 @@ import sys
 from getpass import getpass
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from modules.subprocess_utils import hidden_window_kwargs
+
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
 CONFIG_EXAMPLE = BASE_DIR / "config.json.example"
@@ -56,6 +59,7 @@ def _install_deps():
     result = subprocess.run(
         [sys.executable, "-m", "pip", "install", "-r", str(req)],
         capture_output=False,
+        **hidden_window_kwargs(),
     )
     if result.returncode != 0:
         print("[WARNING] Some packages may not have installed correctly.")
@@ -67,6 +71,7 @@ def _install_deps():
     subprocess.run(
         [sys.executable, "-m", "pywin32_postinstall", "-install"],
         capture_output=True,
+        **hidden_window_kwargs(),
     )
     print("[OK] pywin32 post-install done")
 
@@ -137,6 +142,7 @@ def _capture_baseline():
     result = subprocess.run(
         [sys.executable, str(BASE_DIR / "security_commander.py"), "--baseline"],
         capture_output=False,
+        **hidden_window_kwargs(),
     )
     if result.returncode == 0:
         print("[OK] Baseline captured")
@@ -162,7 +168,7 @@ def _schedule_task():
         "/rl", "highest",
         "/f",
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, **hidden_window_kwargs())
     if result.returncode == 0:
         print(f"[OK] Task '{task_name}' registered — runs daily at 07:00")
     else:
