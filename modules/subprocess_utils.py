@@ -45,5 +45,5 @@ def run_hidden(
         "timeout": timeout,
     }
     merged.update(hidden_window_kwargs())
-    merged.update(kwargs)  # caller overrides win
+    merged.update(kwargs)  # caller overrides take precedence
     return subprocess.run(args, **merged)
