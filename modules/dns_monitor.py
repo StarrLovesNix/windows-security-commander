@@ -60,6 +60,7 @@ class DNSMonitor:
                     "| ConvertTo-Json -Compress",
                 ],
                 timeout=15,
+                creationflags=subprocess.CREATE_NO_WINDOW,
             )
             if result.returncode == 0 and result.stdout.strip():
                 data = json.loads(result.stdout.strip())
