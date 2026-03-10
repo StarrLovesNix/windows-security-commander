@@ -51,6 +51,7 @@ a = Analysis(
         'modules.baseline',
         'modules.alert_history',
         'modules.alert_store',
+        'modules.subprocess_utils',
         'modules.notifier',
         'modules.session_logger',
         'modules.gui',

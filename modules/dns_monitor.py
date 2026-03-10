@@ -16,6 +16,7 @@ from datetime import datetime
 from typing import Set
 
 from .events import EventType, SecurityEvent, Severity, event_queue
+from .subprocess_utils import run_hidden
 
 logger = logging.getLogger(__name__)
 
@@ -52,20 +53,22 @@ class DNSMonitor:
 
     def _get_cache(self) -> list:
         try:
-            result = subprocess.run(
+            result = run_hidden(
                 [
                     "powershell", "-NoProfile", "-NonInteractive", "-Command",
                     "Get-DnsClientCache | Select-Object Entry,RecordType,Data "
                     "| ConvertTo-Json -Compress",
                 ],
-                capture_output=True,
-                text=True,
                 timeout=15,
             )
             if result.returncode == 0 and result.stdout.strip():
                 data = json.loads(result.stdout.strip())
                 # PowerShell returns a dict (not list) when there is only one entry
                 return data if isinstance(data, list) else [data]
+        except FileNotFoundError:
+            logger.warning("PowerShell not found — DNS monitoring disabled")
+        except subprocess.TimeoutExpired:
+            logger.warning("DNS cache poll timed out (>15 s)")
         except Exception as exc:
             logger.debug("DNS cache poll error: %s", exc)
         return []

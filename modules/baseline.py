@@ -23,6 +23,7 @@ from typing import Any, Dict, List
 import psutil
 
 from .events import EventType, SecurityEvent, Severity, event_queue
+from .subprocess_utils import run_hidden
 
 logger = logging.getLogger(__name__)
 
@@ -30,15 +31,19 @@ logger = logging.getLogger(__name__)
 def _ps(command: str, timeout: int = 20) -> List[str]:
     """Run a PowerShell command that returns a JSON string list."""
     try:
-        r = subprocess.run(
+        r = run_hidden(
             ["powershell", "-NoProfile", "-NonInteractive", "-Command", command],
-            capture_output=True, text=True, timeout=timeout,
+            timeout=timeout,
         )
         if r.returncode == 0 and r.stdout.strip():
             data = json.loads(r.stdout.strip())
             if isinstance(data, list):
                 return [str(x) for x in data]
             return [str(data)]
+    except FileNotFoundError:
+        logger.warning("PowerShell not found — baseline query skipped")
+    except subprocess.TimeoutExpired:
+        logger.warning("PowerShell query timed out (>%d s)", timeout)
     except Exception as exc:
         logger.debug("PowerShell query failed: %s", exc)
     return []
